@@ -14,10 +14,6 @@ import java.util.Set;
 public class CatalogController extends HttpServlet {
 
     private static final ProductDao productDao = new ProductDao();
-    private static final int ITEMS_COUNT = 16;
-    private static final String NAME_ATTRIBUTE = "productName";
-    private static final String PRICE_ATTRIBUTE = "productPrice";
-    private static final String PICTURE_ATTRIBUTE = "productPicture";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String category = request.getParameter("categories");
