@@ -9,16 +9,28 @@ public class ConnectionPool {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/javaweb?serverTimezone=Europe/Minsk&allowMultiQueries=true";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "yuliana245yuliana";
+    private static ConnectionPool instance;
+
+    private ConnectionPool(){ }
+
+    public static ConnectionPool getInstance() {
+        if(instance==null) {
+            instance = new ConnectionPool();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
 
     public Connection getConnection(){
         Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         return connection;
     }

@@ -1,6 +1,8 @@
 package com.yuliana.dao;
 
 import com.yuliana.beans.Product;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -8,11 +10,17 @@ import java.util.Set;
 
 public class ProductDao {
 
-    private final ConnectionPool pool = new ConnectionPool();
+    private final ConnectionPool pool = ConnectionPool.getInstance();
     private final Connection connection = pool.getConnection();
     private static final String CATALOG_ITEMS = "SELECT * FROM products";
     private static final String ITEMS_BY_CATEGORY = "SELECT * FROM products WHERE category = ?";
     private static final String ITEMS_IN_STOCK = "SELECT * FROM products WHERE count > 0";
+    private final Logger logger;
+
+    public ProductDao(){
+        logger = Logger.getLogger(this.getClass());
+        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+    }
 
     public Set<Product> getAllProducts(){
         Set<Product> products = new HashSet<>();
@@ -22,7 +30,7 @@ public class ProductDao {
                 products.add(fillProduct(result));
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return products;
     }
@@ -38,7 +46,7 @@ public class ProductDao {
                 }
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return products;
     }
@@ -51,7 +59,7 @@ public class ProductDao {
                 products.add(fillProduct(result));
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return products;
     }
@@ -68,7 +76,7 @@ public class ProductDao {
             product.setCategory(result.getString(6));
             product.setProductId(result.getInt(1));
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return product;
     }

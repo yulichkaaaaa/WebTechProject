@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="WebTechProject" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="log4j-1.2.8" />
+        </element>
       </element>
     </root>
   </artifact>

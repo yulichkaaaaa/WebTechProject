@@ -1,6 +1,8 @@
-<%@ page import="com.yuliana.beans.Product" %>
 <%@ page import="java.util.HashSet" %>
+<%@ page import="com.yuliana.beans.CartItem" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="ru">
     <head>
         <meta charset="utf-8">
@@ -11,6 +13,18 @@
 	    <style><%@include file="/css/font-awesome.min.css"%></style>
 	    <style><%@include file="/css/bootstrap.css"%></style>
     </head>
+    <fmt:setLocale value='<%=request.getSession().getAttribute("lang")%>'/>
+    <fmt:setBundle basename="lang" var="loc"/>
+    <fmt:message bundle="${loc}" key="lang.label.cart" var="cart"/>
+    <fmt:message bundle="${loc}" key="lang.label.login" var="login"/>
+    <fmt:message bundle="${loc}" key="lang.label.reg" var="reg"/>
+    <fmt:message bundle="${loc}" key="lang.label.title" var="title"/>
+    <fmt:message bundle="${loc}" key="lang.label.price" var="price"/>
+    <fmt:message bundle="${loc}" key="lang.label.sum" var="sum"/>
+    <fmt:message bundle="${loc}" key="lang.label.count" var="count"/>
+    <fmt:message bundle="${loc}" key="lang.label.total" var="total"/>
+    <fmt:message bundle="${loc}" key="lang.label.pay" var="pay"/>
+    <fmt:message bundle="${loc}" key="lang.label.catalog" var="catalog"/>
     <body data-page="cart">
         <header>
 			<nav class="navbar navbar-default" role="navigation">
@@ -27,9 +41,10 @@
 
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
-							<li><a href="register">Sign up</a></li>
-							<li><a href="login">Login</a></li>
-							<li><a href="cart">Cart</a></li>
+							<li><a href="register">${reg}</a></li>
+							<li><a href="login">${login}</a></li>
+                            <li><a href="catalog">${catalog}</a></li>
+							<li><a href="cart">${cart}</a></li>
 						</ul>
 					</div>
 				</div>
@@ -39,26 +54,21 @@
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>Артикул</th>
-                        <th>Название</th>
-                        <th>Цена</th>
-                        <th>Количество</th>
-                        <th>Сумма</th>
-                        <th></th>
-                    </tr>
+                        <th>${title}</th>
+                        <th>${price}</th>
+                        <th>${count}</th>
+                        <th>${count}</th></tr>
                 </thead>
                 <tbody id="cart">
-                <%HashSet<Product> products =(HashSet<Product>) request.getAttribute("cartItems");
-                    for (Product p : products){
+                <%HashSet<CartItem> cartItems =(HashSet<CartItem>) request.getAttribute("cartItems");
+                    for (CartItem i : cartItems){
 
                         {%>
                     <tr>
-                        <td><%=p.getProductId()%></td>
-                        <td><%=p.getTitle()%></td>
-                        <td><%=p.getPrice()%></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%=i.getTitle()%></td>
+                        <td><%=i.getPrice()%></td>
+                        <td><%=i.getCount()%></td>
+                        <td><%=i.getPrice() * i.getCount()%></td>
                     </tr>
                     <%}
                     }
@@ -66,8 +76,10 @@
                 </tbody>
             </table>
         </div>
-        <div>Итого: <span id="total-cart-summa">65000</span> руб.</div>
+        <div>${total}: <fmt:formatNumber type = "number" maxFractionDigits="2" value = "${amount}" />$.</div>
         <br/>
-        <a class="btn btn-info" href="order.html">Оформить заказ</a>
+        <form method="post">
+            <input type="submit" value="pay">
+        </form>
     </body>
 </html>

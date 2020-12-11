@@ -1,6 +1,9 @@
 <%@ page import="java.util.HashSet" %>
 <%@ page import="com.yuliana.beans.Product" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 	<head>
 		<title>Catalog</title>
@@ -12,6 +15,23 @@
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
 	</head>
+	<fmt:setLocale value='<%=request.getSession().getAttribute("lang")%>'/>
+	<fmt:setBundle basename="lang" var="loc"/>
+	<fmt:message bundle="${loc}" key="lang.label.cart" var="cart"/>
+	<fmt:message bundle="${loc}" key="lang.label.login" var="login"/>
+	<fmt:message bundle="${loc}" key="lang.label.reg" var="reg"/>
+	<fmt:message bundle="${loc}" key="lang.label.catalog" var="catalog"/>
+	<fmt:message bundle="${loc}" key="lang.label.choose" var="choose"/>
+	<fmt:message bundle="${loc}" key="lang.label.dress" var="dress"/>
+	<fmt:message bundle="${loc}" key="lang.label.sweater" var="sweater"/>
+	<fmt:message bundle="${loc}" key="lang.label.skirt" var="skirt"/>
+	<fmt:message bundle="${loc}" key="lang.label.jeans" var="jeans"/>
+	<fmt:message bundle="${loc}" key="lang.label.coat" var="coat"/>
+	<fmt:message bundle="${loc}" key="lang.label.boots" var="boots"/>
+	<fmt:message bundle="${loc}" key="lang.label.in_stock" var="in_stock"/>
+	<fmt:message bundle="${loc}" key="lang.label.add_to_cart" var="add_to_cart"/>
+	<fmt:message bundle="${loc}" key="lang.label.catalog" var="catalog"/>
+
 	<body>
 		<div class="wrapper">
 			<header>
@@ -29,9 +49,10 @@
 
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a href="register">Sign up</a></li>
-								<li><a href="login">Login</a></li>
-								<li><a href="cart">Cart</a></li>
+								<li><a href="register">${reg}</a></li>
+								<li><a href="login">${login}</a></li>
+								<li><a href="catalog">${catalog}</a></li>
+								<li><a href="cart">${cart}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -46,15 +67,15 @@
 					<div class="filters">
 						<form method="post">
 							<select name="categories">
-								<option>choose a category</option>
-								<option>dress</option>
-								<option>sweater</option>
-								<option>jeans</option>
-								<option>coat</option>
-								<option>boots</option>
-								<option>skirt</option>
+								<option value="choose a category">${choose}</option>
+								<option value="dress">${dress}</option>
+								<option value="sweater">${sweater}</option>
+								<option value="jeans">${jeans}</option>
+								<option value="coat">${coat}</option>
+								<option value="boots">${boots}</option>
+								<option value="skirt">${skirt}</option>
 							</select>
-							<input type="checkbox" name="stock" value="in"> in stock
+							<input type="checkbox" name="stock" value="in"> ${in_stock}
 							<div class="filters_button">
 								<input type="submit" value="confirm">
 							</div>
@@ -70,7 +91,7 @@
 									<img class="img-responsive" src="${pageContext.request.contextPath}<%=p.getPictureName()%>" alt="Team Member" />
 									<h3><%=p.getTitle()%></h3>
 									<span class="dig"><%=p.getPrice()%></span>
-									<a href="cart/id<%=p.getProductId()%>">добавить в корзину</a>
+									<a href="cart/id<%=p.getProductId()%>">${add_to_cart}</a>
 								</div>
 							</div>
 						<%}
